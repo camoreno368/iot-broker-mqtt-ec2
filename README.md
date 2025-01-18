@@ -48,13 +48,54 @@ Vamos al servicio AWS EC2.
                       allow_anonymous true #allow connection without authentication 
                       listener 1883 #allow connection from every ip
     
-    Se puede probar un **Suscriptor** (Subscribe) al broker abriendo otro terminal y ejecutando lo siguiente:
+   Se puede probar un **Suscriptor** (Subscribe) al broker abriendo otro terminal y ejecutando lo siguiente:
 
                       mosquitto_sub -h ip-address-broker -t test/topic
 
-    Desde otro terminal o desde Putty (client ssh para windows) se puede prueba el Publicador (Publish):   
+   Desde otro terminal o desde Putty (client ssh para windows) se puede prueba el Publicador (Publish):   
     
 
                       mosquitto_pub -h ip-address-broker -p 1883 -t "test/topic" -m "Hello from MQTT client"
 
    Hasta ahora se ha realizado la prueba local del broker MQTT en AWS EC2. Para probar conexión desde clientes de cualquier parte se puede usar el cliente MQTT EXPLORER: https://mqtt-explorer.com/
+
+   Verificado lo anterior se puede probar la siguiente aplicación en python que publica un mensaje en el broker en AWS EC2:
+
+                     import sys
+
+                     import paho.mqtt.client as paho
+
+                     client = paho.Client()
+
+                     if client.connect("54.87.187.153", 1883, 60) != 0:
+                        print("Couldn't connect to the mqtt broker")
+                        sys.exit(1)
+
+                     client.publish("test/topic", "Hi, paho mqtt client works fine!", 0)
+                     client.disconnect()
+   
+   Si lo anterior ha funcionado correctamente quiere decir que nuestro Broker recibe conexión desde cualquier parte. Ahora podemos configurar nuestro ESP32 para que a través de MQTT envíe datos de temperatura y humedad medidos con el sensor dht11. El código que se va a cargar al ESP32 se llama esp32_mqtt_pub.ino. 
+
+   - Verificar el puerto serial al cual está conectado el ESP32 en el PC
+   - Verificar que tenga conexión a internet
+   - Verificar que se conecte al broker
+
+   Desde un terminal donde está configurado el broker se puede ejecutar el siguiente comando para verificar que se está recibiendo los datos:
+
+            mosquitto_sub -h localhost -t esp32/pub
+   
+   Los datos se puede almacenar en un csv utilizando el siguiente comando:
+
+            mosquitto_sub -h localhost -t esp32/pub > data.csv
+
+   También se puede crear un programa en python que suscriba al broker y los datos que reciba los almacene en un csv. Para ejecutar el programa en python en AWS EC2 se deben instalar las siguientes librerías. 
+
+   Para crear un entorno virtual:
+
+             sudo apt install python3-virtualenv
+
+   Para interactuar desde python con mqtt:
+
+            sudo apt install python3-paho-mqtt
+
+   El programa python a ejecutar se llama client-mqtt.py
