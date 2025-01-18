@@ -52,7 +52,7 @@ Vamos al servicio AWS EC2.
 
                       mosquitto_sub -h ip-address-broker -t test/topic
 
-   Desde otro terminal o desde Putty (client ssh para windows) se puede prueba el Publicador (Publish):   
+   Desde otro terminal o desde Putty (client ssh para windows) se puede prueba el **Publicador** (Publish):   
     
 
                       mosquitto_pub -h ip-address-broker -p 1883 -t "test/topic" -m "Hello from MQTT client"
