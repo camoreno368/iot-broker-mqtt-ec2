@@ -84,7 +84,7 @@ Vamos al servicio AWS EC2.
 
             mosquitto_sub -h localhost -t esp32/pub
    
-   Los datos se puede almacenar en un csv utilizando el siguiente comando:
+   Los datos se pueden almacenar en un csv utilizando el siguiente comando:
 
             mosquitto_sub -h localhost -t esp32/pub > data.csv
 
