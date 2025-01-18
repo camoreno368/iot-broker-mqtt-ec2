@@ -43,11 +43,18 @@ Vamos al servicio AWS EC2.
             
    Una vez que la instancia se está ejecutando puedes conectarte a través de SSH y comprobar que las librerías se han instalado.
 
-   Se debe agregar los siguiente al archivo de configuración que está en la ruta /etc/mosquitto/mosquitto.conf
+   Se debe agregar la siguiente información al archivo de configuración que está en la ruta /etc/mosquitto/mosquitto.conf
 
                       allow_anonymous true #allow connection without authentication 
                       listener 1883 #allow connection from every ip
     
-    Se puede probar el broker abriendo otro terminal y ejecutando lo siguiente:
+    Se puede probar un **Suscriptor** (Subscribe) al broker abriendo otro terminal y ejecutando lo siguiente:
 
-                      mosquitto_pub -h ip-address -p 1883 -t "test/topic" -m "Hello from MQTT client"
+                      mosquitto_sub -h ip-address-broker -t test/topic
+
+    Desde otro terminal o desde Putty (client ssh para windows) se puede prueba el Publicador (Publish):   
+    
+
+                      mosquitto_pub -h ip-address-broker -p 1883 -t "test/topic" -m "Hello from MQTT client"
+
+   Hasta ahora se ha realizado la prueba local del broker MQTT en AWS EC2. Para probar conexión desde clientes de cualquier parte se puede usar el cliente MQTT EXPLORER: https://mqtt-explorer.com/
