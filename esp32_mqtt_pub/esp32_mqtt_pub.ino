@@ -9,7 +9,7 @@
 
 
 
-IPAddress server(35, 175, 188, 98);
+IPAddress server(18, 214, 78, 254);
 
 #define dhtpin 14
 #define DHTTYPE DHT11
